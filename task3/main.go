@@ -10,13 +10,14 @@ func main() {
 }
 
 func SquareSum(numbers ...int) int {
-	intCh := make(chan int, len(numbers))
+	intCh := make(chan int)
 	defer close(intCh)
 
 	for _, number := range numbers {
 		go func(n int) {
 			intCh <- n * n
 		}(number)
+
 	}
 
 	sum := 0
