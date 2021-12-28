@@ -17,7 +17,6 @@ func SquareSum(numbers ...int) int {
 		go func(n int) {
 			intCh <- n * n
 		}(number)
-
 	}
 
 	sum := 0
