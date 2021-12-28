@@ -2,35 +2,25 @@ package main
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"time"
+	"sync"
 )
 
 func main() {
 	numbers := []int{1, 2, 3, 4, 5, 6}
-	go PrintSquares(numbers...)
-	time.Sleep(time.Second * 3)
+	PrintSquares(numbers...)
 }
 
 func PrintSquares(numbers ...int) {
-	fmt.Println(Squares(numbers...))
-}
+	var wg sync.WaitGroup
+	wg.Add(len(numbers))
 
-// Я не совсем понял что от меня хотят в задании. Написать конкурентно или вывести именно с помощью интерфейса Stdout, поэтому вот 2 вариант
-func PrintSquares2(numbers ...int) {
-	for _, v := range Squares(numbers...) {
-		os.Stdout.WriteString(strconv.Itoa(v))
-		os.Stdout.Write([]byte{'\n'})
+	for _, number := range numbers {
+		go func(n int) {
+			defer wg.Done()
+			fmt.Println(Square(n))
+		}(number)
 	}
-}
-
-func Squares(numbers ...int) []int {
-	squares := make([]int, len(numbers))
-	for i, number := range numbers {
-		squares[i] = Square(number)
-	}
-	return squares
+	wg.Wait()
 }
 
 func Square(number int) int {
