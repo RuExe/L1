@@ -54,11 +54,3 @@ func CreatePrintWorkers(ch <-chan int, count int) {
 		}()
 	}
 }
-
-/*Иной более простой вариант ожидания сигнала при котором не выполняется накаких действий после получения сигнала для корректного завершения программы
-sigs := make(chan os.Signal)
-signal.Notify(sigs, os.Interrupt)
-
-fmt.Println("awaiting signal")
-<-sigs
-fmt.Println("exiting")*/
